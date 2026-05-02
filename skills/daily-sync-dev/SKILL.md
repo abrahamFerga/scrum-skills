@@ -1,69 +1,62 @@
 ---
 name: daily-sync-dev
-description: Use when a developer needs to prepare or deliver their Daily Scrum update. Triggers on phrases like "prepare my standup", "what's my daily update", "daily sync", "what did I work on", or "help me with standup". Pulls assigned Sprint Backlog items from the connected project management tool (ADO, Jira, or any MCP-compatible backend), checks recent git activity, and composes a concise Sprint-Goal-focused statement. Grounded in the 2020 Scrum Guide.
-ceremony: Daily Scrum
-perspective: Developer
-scrum_guide_ref: "2020 Scrum Guide — Daily Scrum (https://scrumguides.org/scrum-guide.html)"
-version: 2.0.0
+description: Prepares a developer's Daily Scrum update by pulling assigned Sprint Backlog items from the connected project management tool, checking recent git activity, and composing a concise Sprint-Goal-focused statement. Use when a developer says things like "prepare my standup", "daily sync update", "what did I work on", "help me with standup", or "what's my daily update". Don't use for sprint planning, backlog refinement, retrospectives, or any other Scrum ceremony. Don't use when the user is asking general questions about Scrum or the Daily Scrum format.
+license: MIT
+compatibility: Requires a project management MCP (Azure DevOps or Jira) for full functionality. Falls back to manual mode when no MCP is connected. Works with Claude Code, Cursor, GitHub Copilot, and any agentskills.io-compatible agent.
+metadata:
+  ceremony: Daily Scrum
+  perspective: Developer
+  scrum_guide_ref: https://scrumguides.org/scrum-guide.html
+  version: "2.0.0"
 ---
 
 # Daily Scrum — Developer Update
 
 ## Scrum Guide grounding
 
-The **Daily Scrum** is a **15-minute event** for Developers. Its sole purpose is to **inspect progress toward the Sprint Goal** and produce an actionable plan for the next day of work.
+The **Daily Scrum** is a 15-minute event for Developers. Its purpose is to inspect progress toward the Sprint Goal and produce an actionable plan for the next day.
 
-Key rules:
-- It is **not** a status report to management or the Scrum Master.
-- The 2020 Scrum Guide **removed the mandatory three questions** — use whatever structure serves the team.
-- Focus is always on the **Sprint Goal**, not individual task completion.
-
----
-
-## Your role
-
-You are a Scrum coach helping a Developer prepare a clear, concise Daily Scrum statement. You surface what matters for team coordination — progress toward the Sprint Goal and anything blocking it.
+Key rules this skill enforces:
+- It is not a status report to management or the Scrum Master.
+- The 2020 Scrum Guide removed the mandatory three questions — any structure that serves the team is valid.
+- Focus is on the **Sprint Goal**, not individual task counts.
 
 ---
 
 ## Tool detection
 
-Before doing anything else, identify which project management tool is available:
+Identify which project management tool is available before proceeding:
 
-1. Check if any `mcp__azure-devops__*` tools are active → use **ADO**
-2. Otherwise check if `mcp__jira__*` tools are active → use **Jira**
-3. If both are available → ask: *"I see both ADO and Jira connected — which should I use for this?"*
-4. If neither is available → set mode to **manual** and ask the user to paste their sprint items
-
-Store the result as `$PM_TOOL`.
+1. Check for active `mcp__azure-devops__*` tools → set `$PM_TOOL` to `ado`
+2. Otherwise check for active `mcp__jira__*` tools → set `$PM_TOOL` to `jira`
+3. If both are available → ask: *"I see both ADO and Jira connected — which should I use?"*
+4. If neither is available → set `$PM_TOOL` to `manual`
 
 ---
 
-## Step 1 — Identify the Developer
+## Step 1 — Identify the developer
 
-Ask:
-> "What's your name or username as it appears in your PM tool?"
+Ask: *"What's your name or username as it appears in your PM tool?"*
 
-Store as `$DEVELOPER`. If the user skips this, proceed with whatever items are returned and note attribution may be incomplete.
+Store as `$DEVELOPER`. If skipped, proceed with whatever items are returned and note that attribution may be incomplete.
 
 ---
 
 ## Step 2 — Fetch the Sprint Goal
 
-The Sprint Goal is the lens through which everything else is evaluated. Try to retrieve it from the current sprint/iteration. If unavailable, ask:
-> "What's your Sprint Goal for this sprint?"
+Retrieve the Sprint Goal from the current sprint or iteration.
 
-Store as `$SPRINT_GOAL`. If truly unknown, proceed — but note that a missing Sprint Goal is a Scrum health issue worth raising with the Scrum Master.
+- **ADO:** Query the current iteration node for its goal field.
+- **Jira:** Query the active sprint's `goal` field.
+- **Manual:** Ask the developer directly.
 
-**ADO:** Query the current iteration node for its goal field.
-**Jira:** Query the active sprint's `goal` field.
-**Manual:** Ask the user directly.
+Store as `$SPRINT_GOAL`. If unavailable, proceed and note that a missing Sprint Goal is a team health issue worth raising.
 
 ---
 
 ## Step 3 — Fetch Sprint Backlog items
 
-Retrieve work items assigned to `$DEVELOPER` in the current sprint, then group them:
+Retrieve work items assigned to `$DEVELOPER` in the current sprint and group into:
 
 | Bucket | Criteria |
 |---|---|
@@ -71,7 +64,7 @@ Retrieve work items assigned to `$DEVELOPER` in the current sprint, then group t
 | **In Progress** | Active / In Progress state |
 | **Planned** | To Do / New — sprint-committed but not started |
 
-**ADO:**
+**ADO query:**
 ```sql
 SELECT [System.Id], [System.Title], [System.State], [System.ChangedDate]
 FROM WorkItems
@@ -81,7 +74,7 @@ WHERE [System.AssignedTo] = '$DEVELOPER'
 ORDER BY [System.ChangedDate] DESC
 ```
 
-**Jira:**
+**Jira query:**
 ```
 JQL: assignee = "$DEVELOPER"
      AND sprint in openSprints()
@@ -89,32 +82,32 @@ JQL: assignee = "$DEVELOPER"
      ORDER BY updated DESC
 ```
 
-**Manual:** Ask the user to paste their items and parse them into the three buckets.
+**Manual:** Ask the developer to paste their items and parse them into the three buckets.
 
 ---
 
 ## Step 4 — Fetch recent git activity *(optional)*
 
-If a git repository is present:
+Run the following if a git repository is present:
 ```bash
 git log --oneline --since="yesterday 00:00" --author="$DEVELOPER"
 ```
-Use commit messages to give concrete substance to the "Done" bucket. Skip silently if unavailable or empty.
+Use commit messages to enrich the "Done" bucket. Skip silently if unavailable or empty.
 
 ---
 
 ## Step 5 — Ask about blockers
 
 Ask one focused question:
-> "Is anything slowing you down or blocking progress toward the Sprint Goal?"
+*"Is anything slowing you down or blocking progress toward the Sprint Goal?"*
 
-Keep it short — this is not a troubleshooting session.
+Accept free-form input. Do not troubleshoot the blocker — note it for the update.
 
 ---
 
-## Step 6 — Draft the update
+## Step 6 — Compose the update
 
-Compose the update with the **Sprint Goal as the organizing lens**.
+Compose the update using the Sprint Goal as the organizing lens:
 
 ```
 Daily Scrum — [DEVELOPER NAME] — [DATE]
@@ -131,30 +124,30 @@ Blockers / Impediments
 - [Description] — OR — None.
 ```
 
-**Rules:**
-1. Reference work item IDs (format depends on the tool — e.g. `#1234`, `PROJ-456`)
-2. "Plan for today" must be a concrete action, not a vague intent
-3. Items that don't contribute to the Sprint Goal still get listed, flagged as scope drift
-4. Max 10 bullets total — group minor tasks
+Drafting rules:
+1. Reference work item IDs in the tool's native format (e.g., `#1234`, `PROJ-456`)
+2. Each "Plan for today" bullet must name a concrete next action, not a vague continuation
+3. Items unrelated to the Sprint Goal are listed separately with a scope-drift note
+4. Maximum 10 bullets total — group minor tasks
 5. No estimates, percentages, or hours
-6. Tone: peer-to-peer, not a report to management
+6. Tone is peer-to-peer, not a report to a manager
 
 ---
 
-## Step 7 — Review and confirm
+## Step 7 — Review and finalize
 
 Present the draft and ask:
-> "Does this reflect what you want to share with the team? Say 'looks good' to finalize, or tell me what to adjust."
+*"Does this reflect what you want to share with the team? Say 'looks good' to finalize, or tell me what to adjust."*
 
-Once confirmed, output the final update in a clean code block — ready to copy-paste into Slack, Teams, or a standup thread.
+Apply corrections and re-present. Once confirmed, output the final update in a clean code block ready to copy-paste.
 
 ---
 
 ## Guardrails
 
-- **Never invent work item details.** If the PM tool returns nothing, say so and ask for context.
-- **Never act as a status report.** If the user wants to send this to management, note it contradicts the Daily Scrum's purpose.
-- **Never update work item state** without explicit confirmation — offer it as a follow-up.
-- **Never include credentials, tokens, or PII** in the update.
-- **The three questions are a technique, not a rule.** Adapt the template if the team uses a different format (e.g. walking the board).
-- **Redirect problem-solving.** If the user starts troubleshooting a blocker, note: *"Let's note that and dig in after the standup."*
+- Never invent work item details. If the PM tool returns nothing, say so and ask for context.
+- Never position the output as a management status report.
+- Never update work item state without explicit developer confirmation.
+- Never include credentials, tokens, or PII in the update.
+- Adapt the format if the team uses a different standup structure — the Sprint Goal focus is what matters, not the template.
+- When a developer starts troubleshooting a blocker, note it and redirect: *"Let's capture that and dig in after the standup."*
