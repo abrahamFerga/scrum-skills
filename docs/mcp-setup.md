@@ -1,52 +1,73 @@
 # MCP Setup
 
-Skills in this library use MCP (Model Context Protocol) to read work items from your project management tool. You need one of the following configured in Claude Code.
+Skills auto-detect the connected project management tool at runtime — no configuration inside skill files. You only need to configure the MCP server once, at the project or global level.
 
 ---
 
 ## Azure DevOps
 
-### Recommended MCP server
+### MCP server
 
-Use the official or community ADO MCP server. Configure it in your Claude Code settings:
+Use the official Microsoft package: [`@azure-devops/mcp`](https://github.com/microsoft/azure-devops-mcp)
+
+**1. Create the local config file** (never commit this):
+
+Copy `.mcp.json.example` to `.mcp.json` and fill in your org name:
 
 ```json
-// .claude/settings.json  (project) or ~/.claude/settings.json (global)
 {
   "mcpServers": {
-    "ado": {
+    "azure-devops": {
+      "type": "stdio",
       "command": "npx",
-      "args": ["-y", "@your-ado-mcp-package/server"],
+      "args": ["-y", "@azure-devops/mcp", "<your-org-name>", "--authentication", "pat"],
       "env": {
-        "ADO_ORG_URL": "https://dev.azure.com/your-org",
-        "ADO_PAT": "<your-personal-access-token>"
+        "PERSONAL_ACCESS_TOKEN": "<base64 of 'anystring:your-raw-pat'>"
       }
     }
   }
 }
 ```
 
-> **Note:** Never commit your PAT. Use environment variables or a secrets manager.
+**2. Create a Personal Access Token (PAT)**
 
-### Required PAT scopes
+Go to `https://dev.azure.com/<your-org>/_usersSettings/tokens` and create a token with:
 
 | Scope | Reason |
 |---|---|
 | `Work Items (Read)` | Fetch sprint work items |
-| `Work Items (Write)` | Optional — only needed if a skill updates item state |
+| `Work Items (Write)` | Optional — only if a skill creates or updates items |
+
+**3. Encode the PAT**
+
+```powershell
+# PowerShell
+[Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes("user:YOUR_PAT_HERE"))
+```
+
+```bash
+# bash / macOS
+echo -n "user:YOUR_PAT_HERE" | base64
+```
+
+Set the result as `PERSONAL_ACCESS_TOKEN` in `.mcp.json`.
+
+> **Never commit `.mcp.json`** — it is listed in `.gitignore`. Use `.mcp.json.example` as the shareable template.
 
 ---
 
 ## Jira
 
-### Recommended MCP server
+### MCP server
+
+Use your preferred Jira MCP package and configure it in `.mcp.json`:
 
 ```json
 {
   "mcpServers": {
     "jira": {
       "command": "npx",
-      "args": ["-y", "@your-jira-mcp-package/server"],
+      "args": ["-y", "<your-jira-mcp-package>"],
       "env": {
         "JIRA_BASE_URL": "https://your-org.atlassian.net",
         "JIRA_EMAIL": "you@example.com",
@@ -57,27 +78,37 @@ Use the official or community ADO MCP server. Configure it in your Claude Code s
 }
 ```
 
-### Required API token scopes
+Create a Jira API token at `https://id.atlassian.com/manage-profile/security/api-tokens`.
 
 | Scope | Reason |
 |---|---|
 | `read:jira-work` | Fetch sprint issues |
-| `write:jira-work` | Optional — only needed if a skill transitions issue state |
+| `write:jira-work` | Optional — only if a skill creates or transitions issues |
 
 ---
 
-## Verifying your setup
+## Verify the connection
 
-After configuring, run the following inside Claude Code to confirm the MCP is active:
+Restart Claude Code in your project directory, then run:
 
 ```
 /mcp
 ```
 
-You should see your `ado` or `jira` server listed as connected.
+You should see `azure-devops` or `jira` listed as connected.
 
 ---
 
 ## Using skills without MCP
 
-All skills include a manual fallback. If no MCP is connected, the skill will ask you to paste your work items directly into the chat. This is useful for teams that cannot install an MCP server due to security policy.
+All skills include a manual fallback. When no MCP is connected, the skill asks you to paste your sprint items directly into the chat. Useful for teams with security restrictions on MCP servers or when using agents that don't support MCP (e.g. GitHub Copilot Chat).
+
+---
+
+## Security checklist
+
+- [ ] `.mcp.json` is in `.gitignore` *(already set in this repo)*
+- [ ] `.claude/settings.local.json` is in `.gitignore` *(already set in this repo)*
+- [ ] PAT has only the minimum required scopes
+- [ ] PAT has an expiry date set
+- [ ] You are not storing PAT values in any tracked file

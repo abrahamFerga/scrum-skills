@@ -6,10 +6,12 @@
       "args": [
         "-y",
         "@azure-devops/mcp",
-        "<your-ado-org-name>"
+        "<your-ado-org-name>",
+        "--authentication",
+        "pat"
       ],
       "env": {
-        "PERSONAL_ACCESS_TOKEN": "<base64-encoded-pat>"
+        "PERSONAL_ACCESS_TOKEN": "<base64 of 'anystring:your-raw-pat'>"
       }
     }
   }
