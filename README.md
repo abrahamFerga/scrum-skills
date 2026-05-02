@@ -21,7 +21,7 @@ More ceremonies coming — Sprint Planning, Sprint Review, Retrospective.
 ### 1. Clone the repo
 
 ```bash
-git clone https://github.com/your-username/scrum-skills
+git clone https://github.com/abrahamFerga/scrum-skills
 ```
 
 ### 2. Install skills for your tool
