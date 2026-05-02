@@ -12,7 +12,7 @@ Each skill maps to a Scrum ceremony or role activity. Skills are invokable as sl
 |---|---|---|
 | Daily Sync | [`/daily-sync-dev`](skills/daily-sync/developer-update.md) | Developer |
 | Sprint Planning | *(coming soon)* | |
-| Backlog Refinement | *(coming soon)* | |
+| Backlog Refinement | [`/po-create-story`](skills/backlog-refinement/po-create-user-story.md) | Product Owner / PM |
 | Sprint Review | *(coming soon)* | |
 | Sprint Retrospective | *(coming soon)* | |
 

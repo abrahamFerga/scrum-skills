@@ -24,7 +24,9 @@ Examples:
 *(coming soon)*
 
 ### Backlog Refinement
-*(coming soon)*
+| File | Perspective | Status |
+|---|---|---|
+| [`po-create-user-story.md`](backlog-refinement/po-create-user-story.md) | Product Owner / PM | stable |
 
 ### Sprint Review
 *(coming soon)*
