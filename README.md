@@ -1,68 +1,87 @@
-# Scrum Skills for Claude Code
+# scrum-skills
 
-> A curated library of Claude Code skills, prompts, and instructions built around the Scrum framework.
-
-Each skill maps to a Scrum ceremony or role activity. Skills are invokable as slash commands inside [Claude Code](https://claude.ai/code) and integrate with your project management tool (Azure DevOps or Jira) via MCP.
+> A vendor-agnostic library of AI agent skills built around the Scrum framework.
+> Works with Claude Code, Cursor, GitHub Copilot, and any tool that supports the [agentskills.io](https://agentskills.io) spec.
 
 ---
 
 ## Skills
 
-| Ceremony / Activity | Skill | Perspective |
-|---|---|---|
-| Daily Sync | [`/daily-sync-dev`](skills/daily-sync/developer-update.md) | Developer |
-| Sprint Planning | *(coming soon)* | |
-| Backlog Refinement | [`/po-create-user-story`](skills/po-create-user-story.md) | Product Owner / PM |
-| Sprint Review | *(coming soon)* | |
-| Sprint Retrospective | *(coming soon)* | |
+| Skill | Command | Ceremony | Perspective |
+|---|---|---|---|
+| [Daily Scrum — Developer](skills/daily-sync-dev/SKILL.md) | `/daily-sync-dev` | Daily Scrum | Developer |
+| [Create User Story](skills/po-create-user-story/SKILL.md) | `/po-create-user-story` | Backlog Refinement | Product Owner / PM |
+
+More ceremonies coming — Sprint Planning, Sprint Review, Retrospective.
 
 ---
 
 ## Getting Started
 
-### Prerequisites
+### 1. Clone the repo
 
-- [Claude Code](https://claude.ai/code) CLI installed
-- An MCP connector for your project management tool:
-  - **Azure DevOps** — [azure-devops MCP](https://github.com/microsoft/azure-devops-mcp) *(or equivalent)*
-  - **Jira** — [jira MCP](https://github.com/atlassian/jira-mcp) *(or equivalent)*
+```bash
+git clone https://github.com/your-username/scrum-skills
+```
 
-### Installation
+### 2. Install skills for your tool
 
-1. Copy the skill file(s) you want into your project's `.claude/commands/` directory:
+**Claude Code**
+```bash
+cp scrum-skills/skills/daily-sync-dev/SKILL.md \
+   your-project/.claude/commands/daily-sync-dev.md
+```
 
-   ```bash
-   # from your project root
-   git clone https://github.com/your-username/scrum-skills
-   mkdir -p .claude/commands
-   cp scrum-skills/skills/daily-sync/developer-update.md \
-      .claude/commands/daily-sync-dev.md
-   ```
+**Cursor**
+```bash
+cp scrum-skills/skills/po-create-user-story/SKILL.md \
+   your-project/.cursor/rules/po-create-user-story.mdc
+```
 
-2. Restart Claude Code (or reload commands with `/commands reload`).
+**GitHub Copilot**
 
-3. Run the skill:
+Reference skills inline in Copilot Chat:
+```
+#file:scrum-skills/skills/daily-sync-dev/SKILL.md
+```
 
-   ```
-   /daily-sync-dev
-   ```
+See [`skills/README.md`](skills/README.md) and the adapter directories for full details.
 
-### Global installation
+### 3. Connect your PM tool *(optional)*
 
-To make skills available in every project, copy them to `~/.claude/commands/` instead.
+Skills work best when connected to your backlog via MCP:
+
+| Tool | MCP server |
+|---|---|
+| Azure DevOps | [`@azure-devops/mcp`](https://github.com/microsoft/azure-devops-mcp) |
+| Jira | Your Jira MCP server |
+
+Skills **auto-detect** which tool is connected — no configuration required.
+If no MCP is connected, skills fall back to manual mode automatically.
+
+See [`docs/mcp-setup.md`](docs/mcp-setup.md) for setup instructions.
 
 ---
 
-## MCP Setup
+## How skills work
 
-Skills assume one of these MCP tool namespaces is active:
+Each skill is a directory containing a `SKILL.md` file:
 
-| Tool namespace | Used for |
-|---|---|
-| `mcp__ado__*` | Azure DevOps work items |
-| `mcp__jira__*` | Jira issues |
+```
+skills/
+  daily-sync-dev/
+    SKILL.md
+  po-create-user-story/
+    SKILL.md
+```
 
-See [`docs/mcp-setup.md`](docs/mcp-setup.md) for configuration details.
+The `SKILL.md` is loaded by your AI agent as a slash command or instruction file. Skills are **self-contained** — no config files, no path dependencies, no hardcoded tool names.
+
+---
+
+## Scrum Guide alignment
+
+All skills are grounded in the [2020 Scrum Guide](https://scrumguides.org/scrum-guide.html). See [`docs/scrum-guide-references.md`](docs/scrum-guide-references.md) for the sourcing policy.
 
 ---
 
