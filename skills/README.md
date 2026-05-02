@@ -26,7 +26,7 @@ Examples:
 ### Backlog Refinement
 | File | Perspective | Status |
 |---|---|---|
-| [`po-create-user-story.md`](backlog-refinement/po-create-user-story.md) | Product Owner / PM | stable |
+| [`po-create-user-story.md`](po-create-user-story.md) | Product Owner / PM | stable |
 
 ### Sprint Review
 *(coming soon)*

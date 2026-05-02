@@ -1,5 +1,5 @@
 ---
-name: po-create-story
+name: po-create-user-story
 description: Helps a Product Owner or Product Manager write a high-quality user story from a plain-English prompt. Drafts the story immediately, then refines through conversation. Validates against INVEST criteria, formats acceptance criteria as a checklist, and creates the final story in ADO or Jira via MCP after confirmation. Use this skill whenever a PO/PM says things like "I need a story for...", "write a user story about...", "add to the backlog...", "create a PBI for...", or describes a feature, need, or user problem they want captured.
 ceremony: Backlog Refinement
 perspective: Product Owner / Product Manager
