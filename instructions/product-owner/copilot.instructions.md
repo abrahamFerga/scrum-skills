@@ -1,23 +1,19 @@
 ---
-applyTo: "**"
+description: 'Scrum Product Owner context for GitHub Copilot — INVEST story format, outcome-oriented Sprint Goals, stakeholder communication in business language, and backlog item titles that name user capabilities.'
+applyTo: '**'
 ---
 
 # Product Owner — Scrum Context
 
-You are assisting a Product Owner who manages the Product Backlog and is accountable for maximizing value. Every suggestion should help the PO clarify *why* something matters, not just *what* to build.
+Frame every generated artifact around value: who benefits, what they can do, and why it matters now.
 
-## Writing and reviewing user stories
+## User Story Format
 
-When generating or reviewing a user story, always apply INVEST:
-- Persona must be specific — never "user", "the system", or a role so broad it could be anyone
-- "So that" must state a real benefit, not restate the want
-- Acceptance criteria must be verifiable conditions, not UI steps
-- If the story covers multiple independent workflows, suggest splitting it
+Always use the INVEST-aligned template:
 
-Use this template for new stories:
 ```
 As a [specific persona],
-I want [clear, concrete action],
+I want [clear, concrete action or capability],
 so that [measurable benefit or outcome].
 
 Acceptance Criteria:
@@ -26,26 +22,97 @@ Acceptance Criteria:
 - [ ] [Edge case or error state]
 ```
 
-## Sprint Goal framing
+**Good persona**
+```
+As a finance manager reviewing month-end figures,
+```
 
-When asked to draft a Sprint Goal, frame it as an outcome:
-- Good: "Customers can complete checkout without calling support."
-- Weak: "Complete stories #101, #102, and #103."
+**Weak persona — avoid**
+```
+As a user,
+As the system,
+As an admin,
+```
 
-A Sprint Goal is the *reason* the team is doing the Sprint, not a list of what they'll do.
+**Good "so that"**
+```
+so that I can catch overspending before the month closes.
+```
 
-## Backlog item titles
+**Weak "so that" — avoid**
+```
+so that I can see it.
+so that it works.
+```
 
-- Start with a verb: "View", "Export", "Receive", "Configure"
-- Name the user capability, not the technical implementation
+## Acceptance Criteria
+
+Write ACs as observable conditions, not UI steps.
+
+| Write this | Not this |
+|---|---|
+| `The export contains all transactions in the selected date range in CSV format.` | `User clicks Export and a file downloads.` |
+| `An error message appears when the date range exceeds 12 months.` | `User sees an error.` |
+| `The dashboard loads in under 2 seconds for datasets up to 10,000 rows.` | `The dashboard is fast.` |
+
+## Sprint Goal Framing
+
+A Sprint Goal names an outcome, not a task list.
+
+**Good**
+```
+Customers can complete checkout without calling support.
+```
+
+**Weak — avoid**
+```
+Complete stories #101, #102, and #103.
+Finish the checkout work.
+```
+
+When drafting a Sprint Goal: "By the end of this Sprint, [person or team] will be able to [do something they couldn't do before]."
+
+## Backlog Item Titles
+
+- Start with a verb: `View`, `Export`, `Receive`, `Configure`, `Manage`
+- Name the user capability, not the implementation
 - Keep under 80 characters
 
-## Stakeholder communication
+**Good**
+```
+Export transaction history as CSV
+Receive low-balance alerts via email
+View spending breakdown by category
+```
 
-When generating stakeholder updates or release notes, translate work items into outcomes:
-- Not: "Implemented CSV export endpoint"
-- Instead: "Finance teams can now export transaction history directly from the dashboard"
+**Avoid**
+```
+CSV endpoint
+Alert service
+Dashboard update
+```
 
-## Work item references
+## Stakeholder Communication
 
-Reference work item IDs in all related documents: `#1234` (ADO) or `PROJ-456` (Jira). This creates traceability from business decisions to delivered code.
+Translate work items into outcomes when generating release notes, stakeholder updates, or sprint summaries.
+
+**Good**
+```
+Finance teams can now export transaction history directly from the dashboard — no more support calls for data extracts.
+```
+
+**Avoid**
+```
+Implemented CSV export endpoint with date range filtering.
+```
+
+## Work Item References
+
+Include the work item ID in all related documents for traceability: `#1234` (ADO) or `PROJ-456` (Jira).
+
+## Story Size Check
+
+Flag stories that are too large before generating them:
+- More than one distinct persona in the story statement → suggest splitting by persona
+- More than 7 acceptance criteria → suggest splitting by workflow or scenario
+- "And" in the "I want" clause → likely two stories
