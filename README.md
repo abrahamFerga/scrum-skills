@@ -27,6 +27,20 @@
 
 ---
 
+## Persona Instructions
+
+Role-based instructions that ground Claude or Copilot in a specific Scrum accountability. Install once; every session starts with the right context.
+
+| Persona | Claude | Copilot |
+|---|---|---|
+| Developer | [`instructions/developer/claude.md`](instructions/developer/claude.md) | [`instructions/developer/copilot.instructions.md`](instructions/developer/copilot.instructions.md) |
+| Product Owner | [`instructions/product-owner/claude.md`](instructions/product-owner/claude.md) | [`instructions/product-owner/copilot.instructions.md`](instructions/product-owner/copilot.instructions.md) |
+| Scrum Master | [`instructions/scrum-master/claude.md`](instructions/scrum-master/claude.md) | [`instructions/scrum-master/copilot.instructions.md`](instructions/scrum-master/copilot.instructions.md) |
+
+See [`instructions/README.md`](instructions/README.md) for installation steps.
+
+---
+
 ## Getting Started
 
 ### 1. Clone the repo
