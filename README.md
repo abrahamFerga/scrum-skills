@@ -14,7 +14,6 @@
 | [Sprint Planning](skills/sprint-planning/SKILL.md) | `/sprint-planning` | Sprint Planning | Scrum Team |
 | [Daily Scrum — Developer](skills/daily-sync-dev/SKILL.md) | `/daily-sync-dev` | Daily Scrum | Developer |
 | [Sprint Review](skills/sprint-review/SKILL.md) | `/sprint-review` | Sprint Review | Scrum Team |
-| [Sprint Retrospective](skills/sprint-retro/SKILL.md) | `/sprint-retro` | Sprint Retrospective | Scrum Team |
 | [Create User Story](skills/po-create-user-story/SKILL.md) | `/po-create-user-story` | Backlog Refinement | Product Owner / PM |
 
 ### Audits
@@ -24,6 +23,7 @@
 | [Audit User Story](skills/audit-user-story/SKILL.md) | `/audit-user-story` | INVEST, story format, AC quality, Definition of Ready | ADO / Jira / manual |
 | [Audit Sprint — ADO](skills/audit-sprint-ado/SKILL.md) | `/audit-sprint-ado` | Sprint Goal, work item hygiene, state transitions, DoD, capacity | Azure DevOps |
 | [Audit Sprint — Jira](skills/audit-sprint-jira/SKILL.md) | `/audit-sprint-jira` | Sprint Goal, issue hygiene, story points, workflow transitions, DoD | Jira |
+| [Audit Retrospective — ADO](skills/audit-sprint-retrospective-ado/SKILL.md) | `/audit-sprint-retrospective-ado` | Retro summary, action item tracking, pattern analysis, carry-overs | Azure DevOps |
 
 ---
 
