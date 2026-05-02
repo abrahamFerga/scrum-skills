@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "azure-devops": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@azure-devops/mcp",
+        "<your-ado-org-name>"
+      ],
+      "env": {
+        "PERSONAL_ACCESS_TOKEN": "<base64-encoded-pat>"
+      }
+    }
+  }
+}

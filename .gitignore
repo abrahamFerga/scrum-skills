@@ -1,2 +1,5 @@
 # Local Claude Code settings — contains secrets, never commit
 .claude/settings.local.json
+
+# MCP config — contains PAT, use .mcp.json.example as template
+.mcp.json
