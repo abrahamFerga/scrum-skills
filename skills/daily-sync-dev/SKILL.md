@@ -56,33 +56,19 @@ Store as `$SPRINT_GOAL`. If unavailable, proceed and note that a missing Sprint 
 
 ## Step 3 — Fetch Sprint Backlog items
 
-Retrieve work items assigned to `$DEVELOPER` in the current sprint and group into:
+Use the available MCP tools to retrieve work items assigned to `$DEVELOPER` in the current sprint:
+
+- **ADO:** use `wit_my_work_items` or `wit_get_work_items_for_iteration` for the current iteration
+- **Jira:** use the equivalent sprint issue listing tool
+- **Manual:** ask the developer to paste their items directly into the chat
+
+Group the results into:
 
 | Bucket | Criteria |
 |---|---|
 | **Done since last sync** | State moved to Done / Resolved / Closed in the last 24 h |
 | **In Progress** | Active / In Progress state |
 | **Planned** | To Do / New — sprint-committed but not started |
-
-**ADO query:**
-```sql
-SELECT [System.Id], [System.Title], [System.State], [System.ChangedDate]
-FROM WorkItems
-WHERE [System.AssignedTo] = '$DEVELOPER'
-  AND [System.IterationPath] UNDER @CurrentIteration
-  AND [System.State] NOT IN ('Removed', 'Closed')
-ORDER BY [System.ChangedDate] DESC
-```
-
-**Jira query:**
-```
-JQL: assignee = "$DEVELOPER"
-     AND sprint in openSprints()
-     AND statusCategory != Done
-     ORDER BY updated DESC
-```
-
-**Manual:** Ask the developer to paste their items and parse them into the three buckets.
 
 ---
 
