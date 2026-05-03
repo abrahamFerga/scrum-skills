@@ -15,6 +15,12 @@ skills/
 
 ## Available skills
 
+### Developer
+
+| Skill | Command | What it does |
+|---|---|---|
+| [`dev-lead`](dev-lead/SKILL.md) | `/dev-lead` | Reads a story, explores the codebase, and produces a file-by-file implementation plan |
+
 ### Ceremonies
 
 | Skill | Command | Ceremony | Perspective |

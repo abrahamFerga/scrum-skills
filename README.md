@@ -16,6 +16,12 @@
 | [Sprint Review](skills/sprint-review/SKILL.md) | `/sprint-review` | Sprint Review | Scrum Team |
 | [Create User Story](skills/po-create-user-story/SKILL.md) | `/po-create-user-story` | Backlog Refinement | Product Owner / PM |
 
+### Developer
+
+| Skill | Command | What it does | Perspective |
+|---|---|---|---|
+| [Dev Lead](skills/dev-lead/SKILL.md) | `/dev-lead` | Reads a story, explores the codebase, and produces a file-by-file implementation plan as a tech lead would give in a pairing session | Developer |
+
 ### Audits
 
 | Skill | Command | What it audits | Tool |
