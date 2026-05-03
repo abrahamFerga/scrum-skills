@@ -18,9 +18,26 @@
 
 ### Developer
 
-| Skill | Command | What it does | Perspective |
-|---|---|---|---|
-| [Dev Lead](skills/dev-lead/SKILL.md) | `/dev-lead` | Reads a story, explores the codebase, and produces a file-by-file implementation plan as a tech lead would give in a pairing session | Developer |
+| Skill | Command | What it does |
+|---|---|---|
+| [Dev Lead](skills/dev-lead/SKILL.md) | `/dev-lead` | Reads a story, explores the codebase, and produces a file-by-file implementation plan as a tech lead would give in a pairing session |
+| [PR Description](skills/dev-pr-description/SKILL.md) | `/dev-pr-description` | Reads the git diff and linked story, maps changes to acceptance criteria, and generates a complete pull request description |
+
+### Product Owner
+
+| Skill | Command | What it does |
+|---|---|---|
+| [Split Story](skills/po-split-story/SKILL.md) | `/po-split-story` | Applies 9 proven patterns to break an oversized story or epic into Sprint-sized, independently valuable stories |
+| [Release Notes](skills/po-release-notes/SKILL.md) | `/po-release-notes` | Translates completed Sprint work items into audience-appropriate release notes in plain business language |
+
+### Scrum Master
+
+| Skill | Command | What it does |
+|---|---|---|
+| [Capacity Planning](skills/sm-capacity-planning/SKILL.md) | `/sm-capacity-planning` | Calculates team developer-days for the next Sprint, accounting for days off, focus factor, and ceremony overhead |
+| [Velocity Review](skills/sm-velocity-review/SKILL.md) | `/sm-velocity-review` | Analyses velocity trends, predictability rate, and variability across recent Sprints with planning guidance |
+| [Impediment Log](skills/sm-impediment-log/SKILL.md) | `/sm-impediment-log` | Logs, tracks, and resolves Sprint blockers as ADO work items with owners, due dates, and escalation flags |
+| [Stakeholder Update](skills/stakeholder-update/SKILL.md) | `/stakeholder-update` | Drafts Slack messages, emails, or formal status reports translating Sprint progress into business language |
 
 ### Audits
 
@@ -30,6 +47,7 @@
 | [Audit Sprint — ADO](skills/audit-sprint-ado/SKILL.md) | `/audit-sprint-ado` | Sprint Goal, work item hygiene, state transitions, DoD, capacity | Azure DevOps |
 | [Audit Sprint — Jira](skills/audit-sprint-jira/SKILL.md) | `/audit-sprint-jira` | Sprint Goal, issue hygiene, story points, workflow transitions, DoD | Jira |
 | [Audit Retrospective — ADO](skills/audit-sprint-retrospective-ado/SKILL.md) | `/audit-sprint-retrospective-ado` | Retro summary, action item tracking, pattern analysis, carry-overs | Azure DevOps |
+| [Audit Backlog — ADO](skills/audit-backlog-ado/SKILL.md) | `/audit-backlog-ado` | Backlog hygiene, story quality, readiness, staleness, and priority coherence | Azure DevOps |
 
 ---
 
