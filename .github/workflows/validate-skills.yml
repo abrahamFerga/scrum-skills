@@ -1,0 +1,32 @@
+name: Validate Skills
+
+on:
+  push:
+    branches: [master, main]
+    paths:
+      - "skills/**"
+      - "scripts/validate_skills.py"
+  pull_request:
+    paths:
+      - "skills/**"
+      - "scripts/validate_skills.py"
+
+jobs:
+  validate:
+    name: Validate SKILL.md files
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install pyyaml
+
+      - name: Run skill validator
+        run: python scripts/validate_skills.py
