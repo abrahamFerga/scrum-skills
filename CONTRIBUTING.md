@@ -119,6 +119,13 @@ applyTo: '**'
 
 Both fields are required. `description` is how Copilot knows when to activate the instruction. `applyTo: '**'` applies it across the whole repository.
 
+Once written, users install it via:
+```bash
+gh skill install abrahamFerga/scrum-skills <persona-name>
+# or manually:
+cp instructions/<persona>/copilot.instructions.md .github/instructions/<persona>.instructions.md
+```
+
 ### Writing style
 
 - **Claude files** — explain the *why* behind guidelines; Claude benefits from reasoning context

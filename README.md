@@ -43,48 +43,69 @@ See [`instructions/README.md`](instructions/README.md) for installation steps.
 
 ## Getting Started
 
-### 1. Clone the repo
+### GitHub Copilot
+
+Use the `gh` CLI to install skills directly into your project:
 
 ```bash
-git clone https://github.com/abrahamFerga/scrum-skills
+# Preview a skill before installing
+gh skill preview abrahamFerga/scrum-skills daily-sync-dev
+
+# Install a skill into your current project
+gh skill install abrahamFerga/scrum-skills daily-sync-dev
+
+# Install specific skills
+gh skill install abrahamFerga/scrum-skills sprint-planning
+gh skill install abrahamFerga/scrum-skills po-create-user-story
+gh skill install abrahamFerga/scrum-skills audit-user-story
+gh skill install abrahamFerga/scrum-skills audit-sprint-ado
 ```
 
-### 2. Install skills for your tool
+Then invoke skills in Copilot Chat: `/daily-sync-dev`, `/sprint-planning`, etc.
 
-**Claude Code**
+**Persona instructions** — install the instruction file for your role:
+
 ```bash
-cp scrum-skills/skills/daily-sync-dev/SKILL.md \
-   your-project/.claude/commands/daily-sync-dev.md
+# Into your project's .github/instructions/
+cp instructions/developer/copilot.instructions.md \
+   .github/instructions/developer.instructions.md
 ```
 
-**Cursor**
+### Claude Code
+
 ```bash
-cp scrum-skills/skills/po-create-user-story/SKILL.md \
-   your-project/.cursor/rules/po-create-user-story.mdc
+# Add the marketplace
+claude plugin marketplace add https://github.com/abrahamFerga/scrum-skills
+
+# Install individual skills
+claude plugin install daily-sync-dev@scrum-skills
+claude plugin install sprint-planning@scrum-skills
+claude plugin install audit-user-story@scrum-skills
 ```
 
-**GitHub Copilot**
-
-Reference skills inline in Copilot Chat:
+Or via the in-app command:
 ```
-#file:scrum-skills/skills/daily-sync-dev/SKILL.md
+/plugin marketplace add abrahamFerga/scrum-skills
 ```
 
-See [`skills/README.md`](skills/README.md) and the adapter directories for full details.
+**Persona instructions** — append to your project's `CLAUDE.md`:
 
-### 3. Connect your PM tool *(optional)*
+```bash
+cat instructions/developer/claude.md >> CLAUDE.md
+```
 
-Skills work best when connected to your backlog via MCP:
+### Connect your PM tool *(optional)*
+
+Skills auto-detect the connected project management tool — no configuration required.
 
 | Tool | MCP server |
 |---|---|
 | Azure DevOps | [`@azure-devops/mcp`](https://github.com/microsoft/azure-devops-mcp) |
-| Jira | Your Jira MCP server |
+| Jira | Your preferred Jira MCP package |
 
-Skills **auto-detect** which tool is connected — no configuration required.
 If no MCP is connected, skills fall back to manual mode automatically.
 
-See [`docs/mcp-setup.md`](docs/mcp-setup.md) for setup instructions.
+See [`docs/mcp-setup.md`](docs/mcp-setup.md) for PAT setup, required scopes, and troubleshooting.
 
 ---
 

@@ -25,48 +25,43 @@ Each persona directory contains two files:
 
 ---
 
-## Claude Code — installation
-
-Add the instruction content to your project's `CLAUDE.md` (create it in the root if it doesn't exist):
-
-```bash
-# Developer
-cat instructions/developer/claude.md >> CLAUDE.md
-
-# Product Owner
-cat instructions/product-owner/claude.md >> CLAUDE.md
-
-# Scrum Master
-cat instructions/scrum-master/claude.md >> CLAUDE.md
-```
-
-Or paste the content into **Claude > Settings > Custom Instructions** for a user-level persona that applies to all your projects.
-
----
-
 ## GitHub Copilot — installation
 
-Copy the `.instructions.md` file for your role into your repository:
+Install the instruction file for your role using `gh skill install`:
+
+```bash
+gh skill install abrahamFerga/scrum-skills developer
+gh skill install abrahamFerga/scrum-skills product-owner
+gh skill install abrahamFerga/scrum-skills scrum-master
+```
+
+Or copy manually into your project:
 
 ```bash
 mkdir -p .github/instructions
 
-# Developer
-cp instructions/developer/copilot.instructions.md \
-   .github/instructions/developer.instructions.md
-
-# Product Owner
-cp instructions/product-owner/copilot.instructions.md \
-   .github/instructions/product-owner.instructions.md
-
-# Scrum Master
-cp instructions/scrum-master/copilot.instructions.md \
-   .github/instructions/scrum-master.instructions.md
+gh skill install abrahamFerga/scrum-skills developer --target .github/instructions/developer.instructions.md
+# or:
+cp instructions/developer/copilot.instructions.md .github/instructions/developer.instructions.md
 ```
 
 Copilot picks up all `.instructions.md` files in `.github/instructions/` automatically. The `applyTo: "**"` frontmatter in each file activates it across the whole repository.
 
-> **Note:** GitHub Copilot does not support MCP. Skills fall back to manual mode automatically — they will ask you to paste sprint items directly into the chat.
+> **Note:** GitHub Copilot does not support MCP. Skills fall back to manual mode automatically.
+
+---
+
+## Claude Code — installation
+
+Append the instruction for your role to your project's `CLAUDE.md`:
+
+```bash
+cat instructions/developer/claude.md >> CLAUDE.md
+cat instructions/product-owner/claude.md >> CLAUDE.md
+cat instructions/scrum-master/claude.md >> CLAUDE.md
+```
+
+Or paste into **Claude > Settings > Custom Instructions** for a user-level persona that applies across all projects.
 
 ---
 
