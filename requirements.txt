@@ -1,0 +1,2 @@
+# Dependencies for local development and CI validation
+pyyaml>=6.0

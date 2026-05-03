@@ -5,11 +5,11 @@ on:
     branches: [master, main]
     paths:
       - "skills/**"
-      - "scripts/validate_skills.py"
+      - ".github/workflows/validate-skills.yml"
   pull_request:
     paths:
       - "skills/**"
-      - "scripts/validate_skills.py"
+      - ".github/workflows/validate-skills.yml"
 
 jobs:
   validate:
@@ -26,7 +26,97 @@ jobs:
           python-version: "3.12"
 
       - name: Install dependencies
-        run: pip install pyyaml
+        run: pip install -r requirements.txt
 
-      - name: Run skill validator
-        run: python scripts/validate_skills.py
+      - name: Validate SKILL.md files
+        run: |
+          python - <<'EOF'
+          """
+          Validates every skills/<name>/SKILL.md against the agentskills.io spec.
+
+          Rules:
+            1. YAML frontmatter is present and parses cleanly.
+            2. Required top-level fields: name, description, license.
+            3. name matches the parent directory name exactly.
+            4. No unknown top-level fields (custom data belongs inside metadata:).
+            5. File body is 500 lines or fewer.
+          """
+          import sys, re
+          from pathlib import Path
+          import yaml
+
+          SKILLS_DIR = Path("skills")
+          REQUIRED_FIELDS = {"name", "description", "license"}
+          ALLOWED_TOP_LEVEL = {"name", "description", "license", "compatibility", "metadata"}
+          MAX_LINES = 500
+          FRONTMATTER_RE = re.compile(r"^---\s*\n(.*?)\n---\s*\n", re.DOTALL)
+
+          def validate(skill_md):
+              errors = []
+              dir_name = skill_md.parent.name
+              text = skill_md.read_text(encoding="utf-8")
+              lines = text.splitlines()
+
+              if len(lines) > MAX_LINES:
+                  errors.append(f"File is {len(lines)} lines (max {MAX_LINES}). Move large content to references/.")
+
+              match = FRONTMATTER_RE.match(text)
+              if not match:
+                  errors.append("No YAML frontmatter found (expected --- ... --- at top of file)")
+                  return errors
+
+              try:
+                  fm = yaml.safe_load(match.group(1))
+              except yaml.YAMLError as exc:
+                  errors.append(f"YAML parse error: {exc}")
+                  return errors
+
+              if not isinstance(fm, dict):
+                  errors.append("Frontmatter is not a YAML mapping")
+                  return errors
+
+              for field in sorted(REQUIRED_FIELDS):
+                  if field not in fm or not fm[field]:
+                      errors.append(f"Missing required frontmatter field: '{field}'")
+
+              skill_name = fm.get("name", "")
+              if skill_name and skill_name != dir_name:
+                  errors.append(
+                      f"'name' field '{skill_name}' does not match directory name '{dir_name}'"
+                  )
+
+              unknown = set(fm.keys()) - ALLOWED_TOP_LEVEL
+              if unknown:
+                  errors.append(
+                      f"Unknown top-level field(s): {sorted(unknown)} — must be nested inside 'metadata:'"
+                  )
+
+              return errors
+
+          skill_files = [
+              f for f in sorted(SKILLS_DIR.rglob("SKILL.md"))
+              if f.parent != SKILLS_DIR
+          ]
+
+          if not skill_files:
+              print(f"No SKILL.md files found under {SKILLS_DIR}")
+              sys.exit(1)
+
+          failed = []
+          for skill_md in skill_files:
+              errors = validate(skill_md)
+              if errors:
+                  failed.append((skill_md, errors))
+
+          if not failed:
+              print(f"PASS: All {len(skill_files)} skills passed validation.")
+              sys.exit(0)
+
+          print(f"FAIL: {len(failed)} of {len(skill_files)} skills failed:\n")
+          for skill_md, errors in failed:
+              print(f"  {skill_md}")
+              for err in errors:
+                  print(f"    - {err}")
+              print()
+          sys.exit(1)
+          EOF

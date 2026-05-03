@@ -1,5 +1,8 @@
 # scrum-skills
 
+[![Validate Skills](https://github.com/abrahamFerga/scrum-skills/actions/workflows/validate-skills.yml/badge.svg)](https://github.com/abrahamFerga/scrum-skills/actions/workflows/validate-skills.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 > A vendor-agnostic library of AI agent skills built around the Scrum framework.
 > Works with Claude Code, Cursor, GitHub Copilot, and any tool that supports the [agentskills.io](https://agentskills.io) spec.
 
