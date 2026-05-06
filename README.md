@@ -8,15 +8,28 @@
 
 ---
 
-## Demo
+## See it in action
 
-**Auditing a user story against the Definition of Ready**
+<table>
+<tr>
+<td width="50%">
+
+### 🔍 Story audit
+`/audit-user-story` reads story #6 from Azure DevOps, scores it against INVEST, flags missing acceptance criteria, and posts a comment back to the board — all from a single natural-language prompt.
 
 https://github.com/user-attachments/assets/6aa53283-d329-4c13-9c59-55dc1794a3e7
 
-**Tech lead implementation plan from a real ADO story**
+</td>
+<td width="50%">
+
+### 🧑‍💻 Dev lead
+`/dev-lead` fetches a real story, explores the codebase, identifies the reference pattern, and produces a file-by-file implementation plan — so the developer knows exactly where to start.
 
 https://github.com/user-attachments/assets/91ab0d35-1741-4a09-a5ee-f62d41b1d049
+
+</td>
+</tr>
+</table>
 
 ---
 
