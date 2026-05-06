@@ -12,11 +12,11 @@
 
 **Auditing a user story against the Definition of Ready**
 
-https://github.com/abrahamFerga/scrum-skills/releases/download/v1.0.0/Audit_skill.mp4
+https://github.com/user-attachments/assets/6aa53283-d329-4c13-9c59-55dc1794a3e7
 
 **Tech lead implementation plan from a real ADO story**
 
-https://github.com/abrahamFerga/scrum-skills/releases/download/v1.0.0/DevLead_skill.mp4
+https://github.com/user-attachments/assets/91ab0d35-1741-4a09-a5ee-f62d41b1d049
 
 ---
 
