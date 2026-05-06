@@ -22,7 +22,7 @@ Copy `.mcp.json.example` to `.mcp.json` and fill in your org name:
       "command": "npx",
       "args": ["-y", "@azure-devops/mcp", "<your-org-name>", "--authentication", "pat"],
       "env": {
-        "PERSONAL_ACCESS_TOKEN": "<base64 of 'anystring:your-raw-pat'>"
+        "PERSONAL_ACCESS_TOKEN": "<base64 of 'user:your-raw-pat'>"
       }
     }
   }
@@ -58,6 +58,19 @@ echo -n "user:YOUR_PAT_HERE" | base64
 Paste the result as `PERSONAL_ACCESS_TOKEN` in `.mcp.json`.
 
 > **Never commit `.mcp.json`** — it is listed in `.gitignore`. Use `.mcp.json.example` as the shareable template.
+
+**4. Set your default project in `CLAUDE.md`**
+
+Skills ask for the ADO project on every new session unless you declare it in your project's `CLAUDE.md`. Add this once and you will never be prompted again:
+
+```markdown
+## ADO defaults
+- **Project:** `your-project-name`
+- **Team:** `your-team-name`
+Always pass these values to ADO tools — never prompt for project or team selection.
+```
+
+Replace `your-project-name` with the name shown in your ADO URL: `https://dev.azure.com/<org>/<your-project-name>`.
 
 ---
 
@@ -108,6 +121,7 @@ You should see `azure-devops` or `jira` listed as connected. If neither appears,
 |---|---|---|
 | Browser OAuth window opens | `--authentication pat` arg missing | Add `"--authentication", "pat"` to the `args` array |
 | `401 Unauthorized` | PAT not base64-encoded, or wrong format | Re-encode as `base64("user:YOUR_PAT")` |
+| Skills keep asking for the project | No `CLAUDE.md` in the project root | Add ADO defaults to `CLAUDE.md` (see step 4 above) |
 | MCP not listed in `/mcp` | `.mcp.json` not in project root | Move file to the root of the project Claude Code is opened in |
 | PAT rejected | Wrong scopes | Regenerate PAT with required scopes from the table above |
 
