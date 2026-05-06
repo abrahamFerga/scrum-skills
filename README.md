@@ -8,6 +8,32 @@
 
 ---
 
+## Demo
+
+**Auditing a user story against the Definition of Ready**
+
+https://github.com/abrahamFerga/scrum-skills/releases/download/v1.0.0/Audit_skill.mp4
+
+**Tech lead implementation plan from a real ADO story**
+
+https://github.com/abrahamFerga/scrum-skills/releases/download/v1.0.0/DevLead_skill.mp4
+
+---
+
+## Adapt to your process
+
+These skills are grounded in the [2020 Scrum Guide](https://scrumguides.org/scrum-guide.html) — the framework as written, not as any one team practises it.
+
+Scrum is intentionally incomplete. Every team layers their own conventions on top: how they write acceptance criteria, what their Definition of Done requires, which ceremony formats they use, how they integrate with their tools. The guide defines the minimum; your process fills the rest.
+
+**These skills follow the guide. You should adapt them to your team.**
+
+Each `SKILL.md` is a plain Markdown file. Fork this repo, edit the guardrails, change the output format, add your DoD checklist, reference your internal templates. The skills are a starting point — your team's process is the destination.
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) if you want to share an adapted skill back with the community.
+
+---
+
 ## Skills
 
 ### Ceremonies
