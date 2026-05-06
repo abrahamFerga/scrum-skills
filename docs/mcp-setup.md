@@ -22,7 +22,7 @@ Copy `.mcp.json.example` to `.mcp.json` and fill in your org name:
       "command": "npx",
       "args": ["-y", "@azure-devops/mcp", "<your-org-name>", "--authentication", "pat"],
       "env": {
-        "AZURE_DEVOPS_EXT_PAT": "<your-raw-pat>"
+        "PERSONAL_ACCESS_TOKEN": "<base64 of 'user:your-raw-pat'>"
       }
     }
   }
@@ -43,9 +43,19 @@ Go to `https://dev.azure.com/<your-org>/_usersSettings/tokens` and create a toke
 
 Grant only the scopes you need. Most read-only workflows need only `Work Items (Read)`.
 
-**3. Paste the raw PAT into `.mcp.json`**
+**3. Encode the PAT**
 
-Copy the PAT token directly from Azure DevOps and paste it as the `AZURE_DEVOPS_EXT_PAT` value. No encoding needed.
+```powershell
+# PowerShell
+[Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes("user:YOUR_PAT_HERE"))
+```
+
+```bash
+# bash / macOS / WSL
+echo -n "user:YOUR_PAT_HERE" | base64
+```
+
+Paste the result as `PERSONAL_ACCESS_TOKEN` in `.mcp.json`.
 
 > **Never commit `.mcp.json`** — it is listed in `.gitignore`. Use `.mcp.json.example` as the shareable template.
 
@@ -110,7 +120,7 @@ You should see `azure-devops` or `jira` listed as connected. If neither appears,
 | Symptom | Likely cause | Fix |
 |---|---|---|
 | Browser OAuth window opens | `--authentication pat` arg missing | Add `"--authentication", "pat"` to the `args` array |
-| `401 Unauthorized` | Wrong env var name or PAT format | Use `AZURE_DEVOPS_EXT_PAT` with the raw PAT — no base64 encoding |
+| `401 Unauthorized` | PAT not base64-encoded, or wrong format | Re-encode as `base64("user:YOUR_PAT")` |
 | Skills keep asking for the project | No `CLAUDE.md` in the project root | Add ADO defaults to `CLAUDE.md` (see step 4 above) |
 | MCP not listed in `/mcp` | `.mcp.json` not in project root | Move file to the root of the project Claude Code is opened in |
 | PAT rejected | Wrong scopes | Regenerate PAT with required scopes from the table above |
